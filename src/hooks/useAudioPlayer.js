@@ -1,42 +1,38 @@
-import { useState, useEffect } from 'react';
-import { Howl } from 'howler';
+import { useRef, useState, useEffect } from 'react';
 
-export function useAudioPlayer() {
-  const [player, setPlayer] = useState(null);
+export default function useAudioPlayer() {
+  const audioRef = useRef(null);
+  const [playingUrl, setPlayingUrl] = useState(null);
 
-  const play = (url, options = {}) => {
-    if (player) {
-      player.stop();
-    }
-    const newPlayer = new Howl({
-      src: [url],
-      loop: options.loop || false,
-      volume: options.volume ?? 1,
-    });
-    newPlayer.play();
-    setPlayer(newPlayer);
+  const play = (url, { loop = true, volume = 1.0 } = {}) => {
+    stop();
+    const audio = new Audio(url);
+    audio.loop = loop;
+    audio.volume = volume;
+    audio.play().catch((e) => console.warn('Audio play error:', e));
+    audioRef.current = audio;
+    setPlayingUrl(url);
   };
 
   const stop = () => {
-    if (player) {
-      player.stop();
-      setPlayer(null);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setPlayingUrl(null);
     }
   };
 
   const setVolume = (volume) => {
-    if (player) {
-      player.volume(volume);
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
     }
   };
 
   useEffect(() => {
     return () => {
-      if (player) {
-        player.stop();
-      }
+      stop();
     };
-  }, [player]);
+  }, []);
 
-  return { play, stop, setVolume };
+  return { play, stop, setVolume, playingUrl };
 }

@@ -1,38 +1,15 @@
 import React from 'react';
 
-export function StatusBar({ dbConnected, sessionId, onLoadPlaylist }) {
+const StatusBar = ({ dbConnected, sessionId, playlist }) => {
   return (
-    <div style={{
-      position: 'absolute',
-      bottom: 10,
-      left: 10,
-      zIndex: 1000,
-      backgroundColor: 'white',
-      padding: '8px 12px',
-      borderRadius: '8px',
-      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-      fontSize: '14px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px'
-    }}>
-      <div>
-        Session : <strong>{sessionId}</strong>
+    <div id="status-bar">
+      <div className="status-bar-content">
+        <span>Status de la connexion : {dbConnected ? 'Connecté' : 'Déconnecté'}</span>
+        <span>Session: {sessionId}</span>
+        <span>Playliste: {playlist.length} items</span>
       </div>
-      <div style={{ color: dbConnected ? 'green' : 'red' }}>
-        {dbConnected ? 'Connecté' : 'Déconnecté'}
-      </div>
-      {onLoadPlaylist && (
-        <label style={{ cursor: 'pointer', background: '#007bff', color: 'white', padding: '4px 8px', borderRadius: '6px' }}>
-          Charger playlist
-          <input
-            type="file"
-            accept=".txt"
-            onChange={onLoadPlaylist}
-            style={{ display: 'none' }}
-          />
-        </label>
-      )}
     </div>
   );
-}
+};
+
+export default StatusBar;
