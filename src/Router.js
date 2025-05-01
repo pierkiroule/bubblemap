@@ -22,7 +22,7 @@ export default function AppRouter() {
   return (
     <Router>
       <div style={{ textAlign: 'center', padding: '1rem' }}>
-        <h1>BubbleSound</h1>
+        <h1>•°○</h1>
         <nav style={{ marginBottom: '1rem' }}>
           <Link to="/dj" style={{ margin: '0 1rem' }}>DJ</Link>
           <Link to="/p" style={{ margin: '0 1rem' }}>Participant</Link>
